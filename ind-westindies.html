@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <title> D3 viz test </title>
+    <script type="text/javascript" src="../d3/d3.js"></script>
+    <style type="text/css">
+
+    #chart {
+      float: left;
+    }
+
+    #chart2 {
+      overflow: hidden;
+      padding-left: 30px;
+    }
+
+    #chart3 {
+      overflow:hidden;
+      margin-top: 30px;
+      margin-left: 90px;
+    }
+    #pp {
+      float: right;
+      }
+    #a {
+      text-align: center;
+    }
+
+    #i1 {
+      margin-right: 200px;
+    }
+
+    #i2 {
+      margin-left: 200px;
+    }
+
+    
+
+    </style>
+  </head>
+
+  <body>
+    <u><h2>Analysis for India vs West Indies match at Western Australia Cricket Association Ground, Perth</h2></u>
+    <div id="chart">
+    </div>
+    <div id="chart2">    
+    </div>
+    <div id="chart3"></div>
+     <ul>
+      <li>India has played <b>93</b> matches with West Indies as an overall head-to-head; but only managed to win on 38 occasions as opposing to West Indies's <b>54</b>.</li> 
+      <li>Wheras, if the data after 2011 is analyzed, India has won 14 out of <b>20</b> matchas as opposed to West Indies's <b>6</b>. </li>
+      <li>But, when it comes to the Australia/New Zealand venues, India has won <b>4</b> of their <b>8</b> matches</p></li>
+    </ul>
+    <br></br>
+
+    <ul>
+      <li>let us consider some Indian batsmen who have been top performers versus West Indies since 2011</li> 
+    </ul>
+    <div id="a">
+      <img src="../d3/kohli.jpg" id="i1">
+      <img src="../d3/rohit.jpg">
+    </div>
+    <ul>
+      <li>Here are India's top bowlers since 2011 against West Indies</li>
+    </ul>
+    <div id="a">
+      <img src="../d3/jadeja.jpg" id="i1">
+      <img src="../d3/shami.jpg">
+    </div>
+
+    <ul>
+      <li>Now coming to the West Indies's side, here are their top performers against India with the bat:</li>
+    </ul>
+    <div id="a">
+      <img src="../d3/samuels.jpg" id="i1">
+      <img src="../d3/dmbravo.jpg">
+    </div>
+
+    <ul>
+      <li>West Indies's top players with the ball:</li>
+    </ul>
+    <div id="a">
+      <img src="../d3/rampaul.jpg" id="i1">
+      <img src="../d3/russel.jpg">
+    </div>
+
+
+
+
+    <script type="text/javascript">
+      var w = 200;
+      var h = 200;
+      var r = h/2;
+      var color = d3.scale.category20c();
+
+      var data = [{"label":"Category A", "value":14}, 
+                    //{"label":"Category B", "value":50}, 
+                    {"label":"Category C", "value":6}];
+
+      var data2 = [{"label":"Category A", "value":38}, 
+                    //{"label":"Category B", "value":50}, 
+                    {"label":"Category C", "value":54}];
+
+      var data3 = [{"label":"Category A", "value":4}, 
+                    //{"label":"Category B", "value":50}, 
+                    {"label":"Category C", "value":4}];
+
+
+      var vis = d3.select('#chart').append("svg:svg").data([data]).attr("width", w).attr("height", h).append("svg:g").attr("transform", "translate(" + r + "," + r + ")");
+      var pie = d3.layout.pie().value(function(d){return d.value;});
+
+      // declare an arc generator function
+      var arc = d3.svg.arc().outerRadius(r);
+      var arcOver = d3.svg.arc()
+              .outerRadius(r + 10);
+
+      // select paths, use arc generator to draw
+      var arcs = vis.selectAll("g.slice").data(pie).enter().append("svg:g").attr("class", "slice");
+      arcs.append("svg:path")
+          .attr("fill", function(d, i){
+              return color(i);
+          })
+          .attr("d", function (d) {
+              // log the result of the arc generator to show how cool it is :)
+              console.log(arc(d));
+              return arc(d);
+          })
+           .on("mouseenter", function(d) {
+                  d3.select(this)
+                     .attr("stroke","white")
+                     .transition()
+                     .duration(1000)
+                     .attr("d", arcOver)             
+                     .attr("stroke-width",6);
+              })
+              .on("mouseleave", function(d) {
+                  d3.select(this).transition()            
+                     .attr("d", arc)
+                     .attr("stroke","none");
+              });;
+
+        // for the second chart
+      var vis2 = d3.select('#chart2').append("svg:svg").data([data2]).attr("width", w).attr("height", h).append("svg:g").attr("transform", "translate(" + r + "," + r + ")");
+      var pie2 = d3.layout.pie().value(function(d){return d.value;});
+
+      // declare an arc generator function
+      var arc2 = d3.svg.arc().outerRadius(r);
+      var arcOver2 = d3.svg.arc()
+              .outerRadius(r + 10);
+
+      // select paths, use arc generator to draw
+      var arcs2 = vis2.selectAll("g.slice").data(pie).enter().append("svg:g").attr("class", "slice");
+      arcs2.append("svg:path")
+          .attr("fill", function(d, i){
+              return color(i);
+          })
+          .attr("d", function (d) {
+              // log the result of the arc generator to show how cool it is :)
+              console.log(arc2(d));
+              return arc2(d);
+          })
+           .on("mouseenter", function(d) {
+                  d3.select(this)
+                     .attr("stroke","white")
+                     .transition()
+                     .duration(1000)
+                     .attr("d", arcOver2)             
+                     .attr("stroke-width",6);
+              })
+              .on("mouseleave", function(d) {
+                  d3.select(this).transition()            
+                     .attr("d", arc2)
+                     .attr("stroke","none");
+              });;
+
+      var vis3 = d3.select('#chart3').append("svg:svg").data([data3]).attr("width", w).attr("height", h).append("svg:g").attr("transform", "translate(" + r + "," + r + ")");
+      var pie3 = d3.layout.pie().value(function(d){return d.value;});
+
+      // declare an arc generator function
+      var arc3 = d3.svg.arc().outerRadius(r);
+      var arcOver3 = d3.svg.arc()
+              .outerRadius(r + 10);
+
+      // select paths, use arc generator to draw
+      var arcs3 = vis3.selectAll("g.slice").data(pie).enter().append("svg:g").attr("class", "slice");
+      arcs3.append("svg:path")
+          .attr("fill", function(d, i){
+              return color(i);
+          })
+          .attr("d", function (d) {
+              // log the result of the arc generator to show how cool it is :)
+              console.log(arc3(d));
+              return arc3(d);
+          })
+           .on("mouseenter", function(d) {
+                  d3.select(this)
+                     .attr("stroke","white")
+                     .transition()
+                     .duration(1000)
+                     .attr("d", arcOver2)             
+                     .attr("stroke-width",6);
+              })
+              .on("mouseleave", function(d) {
+                  d3.select(this).transition()            
+                     .attr("d", arc2)
+                     .attr("stroke","none");
+              });;
+
+</script>
+</body>
+</html>
